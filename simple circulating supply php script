@@ -1,16 +1,27 @@
 <?php 
 
-$response = file_get_contents('https://api.etherscan.io/api?module=stats&action=tokensupply&contractaddress=***ADD CONTRACT ADDRESS HERE***&apikey=YourApiKeyToken');
-$escrow = file_get_contents('https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=***ADD CONTRACT ADDRESS HERE***&address=***ADD ESCROW ADDRESS HERE***&tag=latest&apikey=YourApiKeyToken');
-$response = json_decode($response);
+$maxsupplyresponse = file_get_contents('https://api.etherscan.io/api?module=stats&action=tokensupply&contractaddress=***ADD CONTRACT ADDRESS HERE***&apikey=YourApiKeyToken');
+$escrowresonse = file_get_contents('https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=***ADD CONTRACT ADDRESS HERE***&address=***ADD ESCROW ADDRESS HERE***&tag=latest&apikey=YourApiKeyToken');
+$maxsupplyresponse = json_decode($maxsupplyresponse);
+$escrowresonse = json_decode($escrowresonse);
 
-foreach ($response as $key => $value) {
+
+foreach ($maxsupplyresponse as $key => $value) {
 	$maxsupply = "$value";
 }
+
+foreach ($escrowresonse as $key => $value) {
+	$escrow = "$value";
+}
+
 $divider = 1000000000000000000;
 
 $number = doubleval($maxsupply);
 $maxsupply = $number / $divider;
+
+$number = doubleval($escrow);
+$escrow = $number / $divider;
+
 
 $circulatingSupply = $maxsupply - $escrow;
 
@@ -22,3 +33,4 @@ echo $circulatingSupply . " FCL in circulation";
 
 
 ?>
+
